@@ -1,0 +1,38 @@
+{
+  "name": "legal-eagle",
+  "version": "0.0.0",
+  "description": "A tool for listing the licenses of all dependencies of a node module",
+  "main": "./lib/legal-eagle",
+  "scripts": {
+    "prepublish": "grunt clean lint coffee",
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atom/legal-eagle.git"
+  },
+  "bugs": {
+    "url": "https://github.com/atom/legal-eagle/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/atom/legal-eagle/raw/master/LICENSE.md"
+    }
+  ],
+  "dependencies": {
+    "read-installed": "~0.2.5",
+    "underscore": "~1.6.0"
+  },
+  "devDependencies": {
+    "coffee-script": "~1.6.3",
+    "jasmine-focused": "~0.19.0",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-cli": "~0.1.8",
+    "grunt": "~0.4.1",
+    "grunt-shell": "~0.2.2",
+    "grunt-coffeelint": "0.0.6",
+    "rimraf": "~2.2.2",
+    "coffee-cache": "~0.2.0"
+  }
+}
