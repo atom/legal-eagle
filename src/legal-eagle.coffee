@@ -120,7 +120,7 @@ isMITLicense = (licenseText) ->
     else
       false
 
-PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF', 'LGPL', 'ISC']
+PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF', 'LGPL', 'ISC', 'Artistic-2.0']
 
 omitPermissiveLicenses = (licenseSummary) ->
   for name, {license} of licenseSummary
