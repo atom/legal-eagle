@@ -20,7 +20,6 @@ findLicenses = (licenseSummary, packageData, path) ->
   id = "#{name}@#{version}"
 
   return unless existsSync(path)
-  return if engines?.atom?
 
   unless licenseSummary[id]?
     entry = {repository: extractRepository(packageData)}
