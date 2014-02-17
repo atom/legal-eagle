@@ -96,6 +96,8 @@ extractLicenseFromDirectory = (path) ->
       'MIT'
     else if isBSDLicense(licenseText)
       'BSD'
+    else if licenseText.indexOf('The ISC License') > -1
+      'ISC'
 
   if license?
     {license, source: licenseFileName, sourceText: licenseText}
