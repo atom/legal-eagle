@@ -19,6 +19,7 @@ findLicenses = (licenseSummary, packageData, path) ->
   {name, version, dependencies, engines} = packageData
   id = "#{name}@#{version}"
 
+  return unless existsSync(path)
   return if engines?.atom?
 
   unless licenseSummary[id]?
