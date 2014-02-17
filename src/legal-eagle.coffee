@@ -74,9 +74,14 @@ extractLicenseFromDirectory = (path) ->
     licenseFileName = 'LICENSE.md'
     licenseText = readIfExists(join(path, licenseFileName))
 
+  unless licenseText?
+    licenseFileName = 'MIT-LICENSE.txt'
+    if licenseText = readIfExists(join(path, licenseFileName))
+      license = 'MIT'
+
   return unless licenseText?
 
-  license =
+  license ?=
     if licenseText.indexOf('Apache License') > -1
       'Apache'
     else if licenseText.indexOf('MIT License') > -1
