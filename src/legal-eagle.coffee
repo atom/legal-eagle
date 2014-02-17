@@ -93,13 +93,6 @@ extractLicenseFromDirectory = (path) ->
 readIfExists = (path) ->
   readFileSync(path, 'utf8') if existsSync(path)
 
-PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF', 'LGPL', 'ISC']
-
-omitPermissiveLicenses = (licenseSummary) ->
-  for name, {license} of licenseSummary
-    delete licenseSummary[name] if license in PermissiveLicenses
-
-
 MITLicenseText = """
   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -118,3 +111,9 @@ isMITLicense = (licenseText) ->
       normalizedLicenseText is MITLicenseText
     else
       false
+
+PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF', 'LGPL', 'ISC']
+
+omitPermissiveLicenses = (licenseSummary) ->
+  for name, {license} of licenseSummary
+    delete licenseSummary[name] if license in PermissiveLicenses
