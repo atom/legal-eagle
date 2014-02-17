@@ -75,6 +75,10 @@ extractLicenseFromDirectory = (path) ->
     licenseText = readIfExists(join(path, licenseFileName))
 
   unless licenseText?
+    licenseFileName = 'LICENCE'
+    licenseText = readIfExists(join(path, licenseFileName))
+
+  unless licenseText?
     licenseFileName = 'MIT-LICENSE.txt'
     if licenseText = readIfExists(join(path, licenseFileName))
       license = 'MIT'
