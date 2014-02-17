@@ -66,8 +66,13 @@ extractLicenseFromReadme = (readme) ->
     {license, source: 'README', sourceText: readme}
 
 extractLicenseFromDirectory = (path) ->
-  licenseText = readIfExists(join(path, 'LICENSE'))
-  licenseText ?= readIfExists(join(path, 'LICENSE.md'))
+  licenseFileName = 'LICENSE'
+  licenseText = readIfExists(join(path, licenseFileName))
+
+  unless licenseText?
+    licenseFileName = 'LICENSE.md'
+    licenseText = readIfExists(join(path, licenseFileName))
+
   return unless licenseText?
 
   license =
@@ -77,7 +82,7 @@ extractLicenseFromDirectory = (path) ->
       'MIT'
 
   if license?
-    {license, source: 'LICENSE', sourceText: licenseText}
+    {license, source: licenseFileName, sourceText: licenseText}
 
 readIfExists = (path) ->
   readFileSync(path, 'utf8') if existsSync(path)
