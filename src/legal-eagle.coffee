@@ -87,7 +87,7 @@ extractLicenseFromDirectory = (path) ->
 readIfExists = (path) ->
   readFileSync(path, 'utf8') if existsSync(path)
 
-PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF']
+PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF', 'LGPL', 'ISC']
 
 omitPermissiveLicenses = (licenseSummary) ->
   for name, {license} of licenseSummary
