@@ -44,6 +44,7 @@ extractLicense = ({license, licenses, readme}, path) ->
     license = 'BSD' if license.match /^BSD-.*/
     license = 'MIT' if license is 'MIT/X11'
     license = 'Apache' if license.match /^Apache.*/
+    license = 'WTF' if license is 'WTFPL'
     {license, source: 'package.json'}
   else
     extractLicenseFromReadme(readme) ? extractLicenseFromDirectory(path) ? {license: 'UNKNOWN'}
