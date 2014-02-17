@@ -41,6 +41,7 @@ extractLicense = ({license, licenses, readme}, path) ->
   if license?
     unless typeof license is 'string'
       license = license.type ? 'UNKNOWN'
+    license = 'BSD' if license.match /^BSD-.*/
     license = 'MIT' if license is 'MIT/X11'
     license = 'Apache' if license.match /^Apache.*/
     {license, source: 'package.json'}
