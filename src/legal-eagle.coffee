@@ -38,7 +38,10 @@ extractRepository = ({repository}) ->
 
 extractLicense = ({license, licenses, readme}, path) ->
   license ?= licenses[0] if licenses?.length > 0
-  if license?
+
+  if result = extractLicenseFromDirectory(path)
+    result
+  else if license?
     unless typeof license is 'string'
       license = license.type ? 'UNKNOWN'
     license = 'BSD' if license.match /^BSD-.*/
@@ -47,7 +50,7 @@ extractLicense = ({license, licenses, readme}, path) ->
     license = 'WTF' if license is 'WTFPL'
     {license, source: 'package.json'}
   else
-    extractLicenseFromReadme(readme) ? extractLicenseFromDirectory(path) ? {license: 'UNKNOWN'}
+    extractLicenseFromReadme(readme) ? {license: 'UNKNOWN'}
 
 extractLicenseFromReadme = (readme) ->
   return unless readme?
