@@ -5,7 +5,7 @@ readInstalled = require 'read-installed'
 
 module.exports = (options, cb) ->
   {path, overrides, omitPermissive} = options
-  readInstalled path, null, console.log, (err, packageData) ->
+  readInstalled path, null, (err, packageData) ->
     return cb(err) if err?
     try
       licenseSummary = overrides ? {}
