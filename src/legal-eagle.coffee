@@ -16,6 +16,9 @@ module.exports = (options, cb) ->
       cb(err)
 
 findLicenses = (licenseSummary, packageData, path) ->
+  # Unmet dependencies are left as strings
+  return if typeof packageData is 'string'
+
   {name, version, dependencies, engines} = packageData
   id = "#{name}@#{version}"
 
