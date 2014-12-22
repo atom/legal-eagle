@@ -7,6 +7,9 @@
     "prepublish": "grunt clean lint coffee",
     "test": "grunt test"
   },
+  "bin": {
+    "legal-eagle": "./bin/legal-eagle"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/atom/legal-eagle.git"

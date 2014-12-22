@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+var legalEagle = require('../lib/legal-eagle');
+var path = require('path');
+
+var pathToCheck;
+if (process.argv[2])
+  pathToCheck = path.resolve(process.argv[2]);
+else
+  pathToCheck = process.cwd();
+
+legalEagle({path: pathToCheck}, function(error, summary) {
+  if (error) {
+    console.error(error);
+    process.exit(1);
+  }
+
+  Object.keys(summary).sort().forEach(function(libraryName) {
+    console.log(libraryName + ': ' + summary[libraryName].license);
+  });
+});
