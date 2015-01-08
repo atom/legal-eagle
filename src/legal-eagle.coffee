@@ -98,7 +98,7 @@ extractLicenseFromDirectory = (path) ->
   unless licenseText?
     for licenseFileName in ['UNLICENSE', 'UNLICENSE.md', 'UNLICENSE.txt', 'UNLICENCE', 'UNLICENCE.md', 'UNLICENCE.txt']
       if licenseText = readIfExists(join(path, licenseFileName))
-        license = 'UNLICENSE'
+        license = 'Unlicense'
         break
 
   return unless licenseText?
