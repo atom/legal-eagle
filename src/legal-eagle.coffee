@@ -1,7 +1,7 @@
 readInstalled = require 'read-installed'
 {size, extend} = require 'underscore'
-{join} = require 'path'
-{existsSync, readFileSync} = require 'fs'
+{basename, extname, join} = require 'path'
+{existsSync, readdirSync, readFileSync} = require 'fs'
 
 module.exports = (options, cb) ->
   {path, overrides, omitPermissive} = options
@@ -53,8 +53,10 @@ extractLicense = ({license, licenses, readme}, path) ->
     license = 'WTF' if license is 'WTFPL'
     license = 'Unlicense' if license.match /^unlicen[sc]e$/i
     {license, source: 'package.json'}
-  else
+  else if readme and readme isnt 'ERROR: No README data found!'
     extractLicenseFromReadme(readme) ? {license: 'UNKNOWN'}
+  else
+    extractLicenseFromReadmeFile(path) ? {license: 'UNKNOWN'}
 
 extractLicenseFromReadme = (readme) ->
   return unless readme?
@@ -73,6 +75,19 @@ extractLicenseFromReadme = (readme) ->
 
   if license?
     {license, source: 'README', sourceText: readme}
+
+extractLicenseFromReadmeFile = (path) ->
+  try
+    readmeFiles = readdirSync(path).filter (child) ->
+      name = basename(child, extname(child))
+      name.toLowerCase() is 'readme'
+  catch error
+    return
+
+  for readmeFilename in readmeFiles
+    if license = extractLicenseFromReadme(readIfExists(join(path, readmeFilename)))
+      return license
+  return
 
 extractLicenseFromDirectory = (path) ->
   licenseFileName = 'LICENSE'
