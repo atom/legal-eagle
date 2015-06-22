@@ -48,6 +48,7 @@ extractLicense = ({license, licenses, readme}, path) ->
     unless typeof license is 'string'
       license = license.type ? 'UNKNOWN'
     license = 'BSD' if license.match /^BSD-.*/
+    license = 'LGPL' if license.match /^LGPL(-.+)*/
     license = 'MIT' if license.match(/^MIT\W/)
     license = 'Apache' if license.match /^Apache.*/
     license = 'WTF' if license is 'WTFPL'
