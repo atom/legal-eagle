@@ -53,6 +53,7 @@ extractLicense = ({license, licenses, readme}, path) ->
     license = 'Apache' if license.match /^Apache.*/
     license = 'WTF' if license is 'WTFPL'
     license = 'Unlicense' if license.match /^unlicen[sc]e$/i
+    license = 'CC-BY' if license.match /^CC-BY(-\d(\.\d)*)?$/i
     {license, source: 'package.json'}
   else if readme and readme isnt 'ERROR: No README data found!'
     extractLicenseFromReadme(readme) ? {license: 'UNKNOWN'}
@@ -203,7 +204,7 @@ isUnlicense = (licenseText) ->
     else
       false
 
-PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF', 'LGPL', 'ISC', 'Artistic-2.0', 'Unlicense']
+PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF', 'LGPL', 'ISC', 'Artistic-2.0', 'Unlicense', 'CC-BY']
 
 omitPermissiveLicenses = (licenseSummary) ->
   for name, {license} of licenseSummary
