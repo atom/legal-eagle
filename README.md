@@ -1,4 +1,4 @@
-# Legal Eagle
+# Legal Eagle [![Build Status](https://travis-ci.org/atom/legal-eagle.svg?branch=master)](https://travis-ci.org/atom/legal-eagle)
 
 A library for listing the licenses of an npm module's dependencies.
 
