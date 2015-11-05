@@ -47,13 +47,13 @@ extractLicense = ({license, licenses, readme}, path) ->
   else if license?
     unless typeof license is 'string'
       license = license.type ? 'UNKNOWN'
-    license = 'BSD' if license.match /^BSD-.*/
-    license = 'LGPL' if license.match /^LGPL(-.+)*/
-    license = 'MIT' if license.match(/^MIT\W/)
-    license = 'Apache' if license.match /^Apache.*/
+    license = 'BSD' if license.match /^[\s(]*BSD-.*/
+    license = 'LGPL' if license.match /^[\s(]*LGPL(-.+)*/
+    license = 'MIT' if license.match(/^[\s(]*MIT\W/)
+    license = 'Apache' if license.match /^[\s(]*Apache.*/
     license = 'WTF' if license is 'WTFPL'
-    license = 'Unlicense' if license.match /^unlicen[sc]e$/i
-    license = 'CC-BY' if license.match /^CC-BY(-\d(\.\d)*)?$/i
+    license = 'Unlicense' if license.match /^[\s(]*unlicen[sc]e$/i
+    license = 'CC-BY' if license.match /^[\s(]*CC-BY(-\d(\.\d)*)?$/i
     {license, source: 'package.json'}
   else if readme and readme isnt 'ERROR: No README data found!'
     extractLicenseFromReadme(readme) ? {license: 'UNKNOWN'}
