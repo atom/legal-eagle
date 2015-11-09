@@ -54,6 +54,7 @@ extractLicense = ({license, licenses, readme}, path) ->
     license = 'WTF' if license is 'WTFPL'
     license = 'Unlicense' if license.match /^[\s(]*unlicen[sc]e$/i
     license = 'CC-BY' if license.match /^[\s(]*CC-BY(-\d(\.\d)*)?$/i
+    license = 'Public Domain' if license.match /^[\s(]*Public Domain/i
     {license, source: 'package.json'}
   else if readme and readme isnt 'ERROR: No README data found!'
     extractLicenseFromReadme(readme) ? {license: 'UNKNOWN'}
@@ -74,6 +75,8 @@ extractLicenseFromReadme = (readme) ->
       'WTF'
     else if readme.indexOf('Unlicense') > -1 or readme.indexOf('UNLICENSE') > -1
       'Unlicense'
+    else if readme.toLocaleLowerCase().indexOf('public domain') > -1
+      'Public Domain'
 
   if license?
     {license, source: 'README', sourceText: readme}
@@ -131,6 +134,8 @@ extractLicenseFromDirectory = (path) ->
       'Unlicense'
     else if licenseText.indexOf('The ISC License') > -1
       'ISC'
+    else if licenseText.toLocaleLowerCase().indexOf('public domain')  > -1
+      'Public Domain'
 
   if license?
     {license, source: licenseFileName, sourceText: licenseText}
@@ -204,7 +209,7 @@ isUnlicense = (licenseText) ->
     else
       false
 
-PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF', 'LGPL', 'ISC', 'Artistic-2.0', 'Unlicense', 'CC-BY']
+PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF', 'LGPL', 'ISC', 'Artistic-2.0', 'Unlicense', 'CC-BY', 'Public Domain']
 
 omitPermissiveLicenses = (licenseSummary) ->
   for name, {license} of licenseSummary
