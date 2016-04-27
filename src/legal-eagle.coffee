@@ -209,7 +209,7 @@ isUnlicense = (licenseText) ->
     else
       false
 
-PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF', 'LGPL', 'ISC', 'Artistic-2.0', 'Unlicense', 'CC-BY', 'Public Domain']
+PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF', 'LGPL', 'ISC', 'Artistic-2.0', 'Unlicense', 'CC-BY', 'CC0-1.0', 'Public Domain']
 
 omitPermissiveLicenses = (licenseSummary) ->
   for name, {license} of licenseSummary
