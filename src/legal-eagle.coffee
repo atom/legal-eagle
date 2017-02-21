@@ -49,6 +49,7 @@ extractLicense = ({license, licenses, readme}, path) ->
       license = license.type ? 'UNKNOWN'
     license = 'BSD' if license.match /^[\s(]*BSD-.*/
     license = 'LGPL' if license.match /^[\s(]*LGPL(-.+)*/
+    license = 'GPL' if license.match /^[\s(]*GPL(-.+)*/
     license = 'MIT' if license.match(/^[\s(]*MIT\W/)
     license = 'Apache' if license.match /^[\s(]*Apache.*/
     license = 'WTF' if license is 'WTFPL'
@@ -111,6 +112,14 @@ extractLicenseFromDirectory = (path) ->
     licenseText = readIfExists(join(path, licenseFileName))
 
   unless licenseText?
+    licenseFileName = 'COPYING'
+    licenseText = readIfExists(join(path, licenseFileName))
+
+  unless licenseText?
+    licenseFileName = 'COPYING.md'
+    licenseText = readIfExists(join(path, licenseFileName))
+
+  unless licenseText?
     licenseFileName = 'MIT-LICENSE.txt'
     if licenseText = readIfExists(join(path, licenseFileName))
       license = 'MIT'
@@ -134,11 +143,16 @@ extractLicenseFromDirectory = (path) ->
       'Unlicense'
     else if licenseText.indexOf('The ISC License') > -1
       'ISC'
+    else if licenseText.indexOf('GNU LESSER GENERAL PUBLIC LICENSE') > -1
+      'LGPL'
+    else if licenseText.indexOf('GNU GENERAL PUBLIC LICENSE') > -1
+      'GPL'
+    else if licenseText.indexOf('The ISC License') > -1
+      'ISC'
     else if licenseText.toLocaleLowerCase().indexOf('public domain')  > -1
       'Public Domain'
 
-  if license?
-    {license, source: licenseFileName, sourceText: licenseText}
+  {license ? 'UNKNOWN', source: licenseFileName, sourceText: licenseText}
 
 readIfExists = (path) ->
   readFileSync(path, 'utf8') if existsSync(path)
@@ -209,7 +223,7 @@ isUnlicense = (licenseText) ->
     else
       false
 
-PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF', 'LGPL', 'ISC', 'Artistic-2.0', 'Unlicense', 'CC-BY', 'Public Domain']
+PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF', 'LGPL', 'LGPL-2.0', 'LGPL-3.0', 'ISC', 'Artistic-2.0', 'Unlicense', 'CC-BY', 'Public Domain']
 
 omitPermissiveLicenses = (licenseSummary) ->
   for name, {license} of licenseSummary
