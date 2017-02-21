@@ -152,7 +152,9 @@ extractLicenseFromDirectory = (path) ->
     else if licenseText.toLocaleLowerCase().indexOf('public domain')  > -1
       'Public Domain'
 
-  {license ? 'UNKNOWN', source: licenseFileName, sourceText: licenseText}
+  license ?= 'UNKNOWN'
+
+  {license, source: licenseFileName, sourceText: licenseText}
 
 readIfExists = (path) ->
   readFileSync(path, 'utf8') if existsSync(path)
