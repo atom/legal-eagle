@@ -52,6 +52,7 @@ extractLicense = ({license, licenses, readme}, path) ->
     license = 'GPL' if license.match /^[\s(]*GPL(-.+)*/
     license = 'MIT' if license.match(/^[\s(]*MIT\W/)
     license = 'Apache' if license.match /^[\s(]*Apache.*/
+    license = 'ISC' if license.match /^[\s(]*ISC.*/
     license = 'WTF' if license is 'WTFPL'
     license = 'Unlicense' if license.match /^[\s(]*unlicen[sc]e$/i
     license = 'CC-BY' if license.match /^[\s(]*CC-BY(-\d(\.\d)*)?$/i
@@ -147,8 +148,6 @@ extractLicenseFromDirectory = (path) ->
       'LGPL'
     else if licenseText.indexOf('GNU GENERAL PUBLIC LICENSE') > -1
       'GPL'
-    else if licenseText.indexOf('The ISC License') > -1
-      'ISC'
     else if licenseText.toLocaleLowerCase().indexOf('public domain')  > -1
       'Public Domain'
 
