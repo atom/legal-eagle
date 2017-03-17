@@ -47,14 +47,16 @@ extractLicense = ({license, licenses, readme}, path) ->
   else if license?
     unless typeof license is 'string'
       license = license.type ? 'UNKNOWN'
-    license = 'BSD' if license.match /^[\s(]*BSD-.*/
-    license = 'LGPL' if license.match /^[\s(]*LGPL(-.+)*/
-    license = 'MIT' if license.match(/^[\s(]*MIT\W/)
-    license = 'Apache' if license.match /^[\s(]*Apache.*/
+    license = 'BSD' if license.match /[\s(]*BSD-.*/
+    license = 'Apache' if license.match /[\s(]*Apache.*/
+    license = 'ISC' if license.match /[\s(]*ISC.*/
+    license = 'MIT' if license.match /[\s(]*MIT.*/
     license = 'WTF' if license is 'WTFPL'
-    license = 'Unlicense' if license.match /^[\s(]*unlicen[sc]e$/i
-    license = 'CC-BY' if license.match /^[\s(]*CC-BY(-\d(\.\d)*)?$/i
-    license = 'Public Domain' if license.match /^[\s(]*Public Domain/i
+    license = 'Unlicense' if license.match /[\s(]*unlicen[sc]e/i
+    license = 'CC-BY' if license.match /[\s(]*CC-BY(-\d(\.\d)*)?/i
+    license = 'Public Domain' if license.match /[\s(]*Public Domain/i
+    license = 'LGPL' if license.match /[\s(]*LGPL(-.+)*/
+    license = 'GPL' if license.match /[\s(]*[^L]GPL(-.+)*/
     {license, source: 'package.json'}
   else if readme and readme isnt 'ERROR: No README data found!'
     extractLicenseFromReadme(readme) ? {license: 'UNKNOWN'}
@@ -111,6 +113,14 @@ extractLicenseFromDirectory = (path) ->
     licenseText = readIfExists(join(path, licenseFileName))
 
   unless licenseText?
+    licenseFileName = 'COPYING'
+    licenseText = readIfExists(join(path, licenseFileName))
+
+  unless licenseText?
+    licenseFileName = 'COPYING.md'
+    licenseText = readIfExists(join(path, licenseFileName))
+
+  unless licenseText?
     licenseFileName = 'MIT-LICENSE.txt'
     if licenseText = readIfExists(join(path, licenseFileName))
       license = 'MIT'
@@ -134,6 +144,10 @@ extractLicenseFromDirectory = (path) ->
       'Unlicense'
     else if licenseText.indexOf('The ISC License') > -1
       'ISC'
+    else if licenseText.indexOf('GNU LESSER GENERAL PUBLIC LICENSE') > -1
+      'LGPL'
+    else if licenseText.indexOf('GNU GENERAL PUBLIC LICENSE') > -1
+      'GPL'
     else if licenseText.toLocaleLowerCase().indexOf('public domain')  > -1
       'Public Domain'
 
@@ -209,7 +223,8 @@ isUnlicense = (licenseText) ->
     else
       false
 
-PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF', 'LGPL', 'ISC', 'Artistic-2.0', 'Unlicense', 'CC-BY', 'CC0-1.0', 'Public Domain']
+
+PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF', 'LGPL', 'LGPL-2.0', 'LGPL-3.0', 'ISC', 'Artistic-2.0', 'Unlicense', 'CC-BY', 'CC0-1.0', 'Public Domain']
 
 omitPermissiveLicenses = (licenseSummary) ->
   for name, {license} of licenseSummary
