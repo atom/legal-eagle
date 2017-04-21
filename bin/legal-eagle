@@ -2,7 +2,7 @@
 
 /* eslint-disable no-console */
 
-const legalEagle = require('../lib/legal-eagle');
+const legalEagle = require('../lib/main');
 const path = require('path');
 
 let pathToCheck;
