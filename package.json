@@ -2,7 +2,7 @@
   "name": "legal-eagle",
   "version": "0.14.0",
   "description": "A tool for listing the licenses of all dependencies of a node module",
-  "main": "./lib/legal-eagle",
+  "main": "./lib/main",
   "scripts": {
     "prepublish": "grunt clean lint coffee",
     "test": "grunt test",
