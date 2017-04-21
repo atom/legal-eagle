@@ -1,21 +1,25 @@
 #!/usr/bin/env node
 
-var legalEagle = require('../lib/legal-eagle');
-var path = require('path');
+/* eslint-disable no-console */
 
-var pathToCheck;
-if (process.argv[2])
+const legalEagle = require('../lib/legal-eagle');
+const path = require('path');
+
+let pathToCheck;
+
+if (process.argv[2]) {
   pathToCheck = path.resolve(process.argv[2]);
-else
+} else {
   pathToCheck = process.cwd();
+}
 
-legalEagle({path: pathToCheck}, function(error, summary) {
+legalEagle({path: pathToCheck}, (error, summary) => {
   if (error) {
     console.error(error);
     process.exit(1);
   }
 
-  Object.keys(summary).sort().forEach(function(libraryName) {
-    console.log(libraryName + ': ' + summary[libraryName].license);
+  Object.keys(summary).sort().forEach(libraryName => {
+    console.log(`${libraryName}: ${summary[libraryName].license}`);
   });
 });
