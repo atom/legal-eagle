@@ -41,9 +41,9 @@ extractRepository = ({repository}) ->
 
 extractLicense = ({license, licenses, readme}, path) ->
   license ?= licenses[0] if licenses?.length > 0
-
-  if result = extractLicenseFromDirectory(path)
-    result
+  result_dir = extractLicenseFromDirectory(path)
+  if result_dir && result_dir['license']
+    result_dir
   else if license?
     unless typeof license is 'string'
       license = license.type ? 'UNKNOWN'
@@ -57,7 +57,10 @@ extractLicense = ({license, licenses, readme}, path) ->
     license = 'Public Domain' if license.match /[\s(]*Public Domain/i
     license = 'LGPL' if license.match /[\s(]*LGPL(-.+)*/
     license = 'GPL' if license.match /[\s(]*[^L]GPL(-.+)*/
-    {license, source: 'package.json'}
+    result = {license, source: 'package.json'}
+    if result_dir && result_dir['sourceText']
+      result['sourceText'] = result_dir['sourceText']
+    result
   else if readme and readme isnt 'ERROR: No README data found!'
     extractLicenseFromReadme(readme) ? {license: 'UNKNOWN'}
   else
@@ -151,8 +154,7 @@ extractLicenseFromDirectory = (path) ->
     else if licenseText.toLocaleLowerCase().indexOf('public domain')  > -1
       'Public Domain'
 
-  if license?
-    {license, source: licenseFileName, sourceText: licenseText}
+  {license, source: licenseFileName, sourceText: licenseText}
 
 readIfExists = (path) ->
   readFileSync(path, 'utf8') if existsSync(path)
