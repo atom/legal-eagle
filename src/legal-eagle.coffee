@@ -41,27 +41,48 @@ extractRepository = ({repository}) ->
 
 extractLicense = ({license, licenses, readme}, path) ->
   license ?= licenses[0] if licenses?.length > 0
-
-  if result = extractLicenseFromDirectory(path)
-    result
+  if license && license.type?
+    license = license.type
+  if Object.prototype.toString.call(license) == '[object Array]'
+    license = license[0]
+  result_dir = extractLicenseFromDirectory(path, license)
+  if result_dir && result_dir['license']
+    result_dir
   else if license?
-    unless typeof license is 'string'
-      license = license.type ? 'UNKNOWN'
-    license = 'BSD' if license.match /[\s(]*BSD-.*/
-    license = 'Apache' if license.match /[\s(]*Apache.*/
-    license = 'ISC' if license.match /[\s(]*ISC.*/
-    license = 'MIT' if license.match /[\s(]*MIT.*/
-    license = 'WTF' if license is 'WTFPL'
-    license = 'Unlicense' if license.match /[\s(]*unlicen[sc]e/i
-    license = 'CC-BY' if license.match /[\s(]*CC-BY(-\d(\.\d)*)?/i
-    license = 'Public Domain' if license.match /[\s(]*Public Domain/i
-    license = 'LGPL' if license.match /[\s(]*LGPL(-.+)*/
-    license = 'GPL' if license.match /[\s(]*[^L]GPL(-.+)*/
-    {license, source: 'package.json'}
+    license = mungeLicenseName(license)
+    result = {license, source: 'package.json'}
+    if result_dir && result_dir['sourceText']
+      result['sourceText'] = result_dir['sourceText']
+    result
   else if readme and readme isnt 'ERROR: No README data found!'
     extractLicenseFromReadme(readme) ? {license: 'UNKNOWN'}
   else
     extractLicenseFromReadmeFile(path) ? {license: 'UNKNOWN'}
+
+mungeLicenseName = (license) ->
+  return unless license
+  if license.match /[\s(]*BSD-.*/
+    'BSD'
+  else if license.match /[\s(]*Apache.*/
+    'Apache'
+  else if license.match /[\s(]*ISC.*/
+    'ISC'
+  else if license.match /[\s(]*MIT.*/
+    'MIT'
+  else if license is 'WTFPL'
+    'WTF'
+  else if license.match /[\s(]*unlicen[sc]e/i
+    'Unlicense'
+  else if license.match /[\s(]*CC-BY(-\d(\.\d)*)?/i
+    'CC-BY'
+  else if license.match /[\s(]*Public Domain/i
+    'Public Domain'
+  else if license.match /[\s(]*LGPL(-.+)*/
+    'LGPL'
+  else if license.match /[\s(]*[^L]GPL(-.+)*/
+    'GPL'
+  else
+    license
 
 extractLicenseFromReadme = (readme) ->
   return unless readme?
@@ -96,63 +117,46 @@ extractLicenseFromReadmeFile = (path) ->
       return license
   return
 
-extractLicenseFromDirectory = (path) ->
-  licenseFileName = 'LICENSE'
-  licenseText = readIfExists(join(path, licenseFileName))
+extractLicenseFromDirectory = (path, expected) ->
+  noticesText = ''
+  for f in readdirSync(path)
+    if f.match(/(licen[s|c]e|copying)/i) && !f.match(/\.(docs|json|html)$/i)
+      potentialLicenseText = readIfExists(join(path, f))
+      potentialLicenseFileName = f
+      potentialLicense = licenseFromText(potentialLicenseText)
+      if expected && potentialLicense && (expected.toLowerCase().indexOf(potentialLicense.toLowerCase()) != -1)
+        licenseFileName = f
+        licenseText = potentialLicenseText
+        license = potentialLicense
+    if f.match(/notice/i)
+      noticesText = noticesText + readIfExists(join(path, f)) + '\n\n'
 
-  unless licenseText?
-    licenseFileName = 'LICENSE.md'
-    licenseText = readIfExists(join(path, licenseFileName))
-
-  unless licenseText?
-    licenseFileName = 'LICENSE.txt'
-    licenseText = readIfExists(join(path, licenseFileName))
-
-  unless licenseText?
-    licenseFileName = 'LICENCE'
-    licenseText = readIfExists(join(path, licenseFileName))
-
-  unless licenseText?
-    licenseFileName = 'COPYING'
-    licenseText = readIfExists(join(path, licenseFileName))
-
-  unless licenseText?
-    licenseFileName = 'COPYING.md'
-    licenseText = readIfExists(join(path, licenseFileName))
-
-  unless licenseText?
-    licenseFileName = 'MIT-LICENSE.txt'
-    if licenseText = readIfExists(join(path, licenseFileName))
-      license = 'MIT'
-
-  unless licenseText?
-    for licenseFileName in ['UNLICENSE', 'UNLICENSE.md', 'UNLICENSE.txt', 'UNLICENCE', 'UNLICENCE.md', 'UNLICENCE.txt']
-      if licenseText = readIfExists(join(path, licenseFileName))
-        license = 'Unlicense'
-        break
-
+  licenseFileName ?= potentialLicenseFileName
+  licenseText ?= potentialLicenseText
+  if noticesText
+    licenseText = noticesText + licenseText
+  license ?= potentialLicense || expected
+  license = mungeLicenseName(license)
   return unless licenseText?
+  {license, source: licenseFileName, sourceText: licenseText}
 
-  license ?=
-    if licenseText.indexOf('Apache License') > -1
-      'Apache'
-    else if isMITLicense(licenseText)
-      'MIT'
-    else if isBSDLicense(licenseText)
-      'BSD'
-    else if isUnlicense(licenseText)
-      'Unlicense'
-    else if licenseText.indexOf('The ISC License') > -1
-      'ISC'
-    else if licenseText.indexOf('GNU LESSER GENERAL PUBLIC LICENSE') > -1
-      'LGPL'
-    else if licenseText.indexOf('GNU GENERAL PUBLIC LICENSE') > -1
-      'GPL'
-    else if licenseText.toLocaleLowerCase().indexOf('public domain')  > -1
-      'Public Domain'
-
-  if license?
-    {license, source: licenseFileName, sourceText: licenseText}
+licenseFromText = (licenseText) ->
+  if licenseText.indexOf('Apache License') > -1
+    'Apache'
+  else if isMITLicense(licenseText)
+    'MIT'
+  else if isBSDLicense(licenseText)
+    'BSD'
+  else if isUnlicense(licenseText)
+    'Unlicense'
+  else if licenseText.indexOf('The ISC License') > -1
+    'ISC'
+  else if licenseText.indexOf('GNU LESSER GENERAL PUBLIC LICENSE') > -1
+    'LGPL'
+  else if licenseText.indexOf('GNU GENERAL PUBLIC LICENSE') > -1
+    'GPL'
+  else if licenseText.toLocaleLowerCase().indexOf('public domain')  > -1
+    'Public Domain'
 
 readIfExists = (path) ->
   readFileSync(path, 'utf8') if existsSync(path)

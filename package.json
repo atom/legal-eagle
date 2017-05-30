@@ -17,12 +17,7 @@
   "bugs": {
     "url": "https://github.com/atom/legal-eagle/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://github.com/atom/legal-eagle/raw/master/LICENSE.md"
-    }
-  ],
+  "license": "MIT",
   "dependencies": {
     "read-installed": "3.1.3",
     "underscore": "~1.6.0"
