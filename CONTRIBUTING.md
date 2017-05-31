@@ -4,7 +4,7 @@
 
 Our [README](README.md) describes the project, its purpose, and caveats, and is necessary reading for contributors.
 
-This project adheres to the Contributor Covenant [code of conduct](CODE_OF_CONDUCT.md).
+This project adheres to the Contributor Covenant [code of conduct](https://github.com/atom/atom/blob/master/CODE_OF_CONDUCT.md).
 By participating, you are expected to uphold this code.
 Please report unacceptable behavior to [atom@github.com](mailto:atom@github.com).
 
