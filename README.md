@@ -29,3 +29,7 @@ If you know the license of a given dependency but this library can't
 automatically determine it, pass an `overrides` hash with its name@version as
 the key and the `license`, `source` and `sourceText` you want to use in the
 summary.
+
+## License
+
+[MIT](LICENSE.md)
