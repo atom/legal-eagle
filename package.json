@@ -25,11 +25,11 @@
   "devDependencies": {
     "coffee-cache": "^1.0.2",
     "coffeescript": "^2.5.1",
-    "grunt": "~0.4.1",
-    "grunt-cli": "~0.1.8",
-    "grunt-coffeelint": "0.0.6",
-    "grunt-contrib-coffee": "~0.7.0",
-    "grunt-shell": "~0.2.2",
+    "grunt": "^1.4.1",
+    "grunt-cli": "^1.4.3",
+    "grunt-coffeelint": "^0.0.16",
+    "grunt-contrib-coffee": "^2.1.0",
+    "grunt-shell": "^3.0.1",
     "jasmine-focused": "^1.0.7",
     "rimraf": "~2.2.2"
   }
