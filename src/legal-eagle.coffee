@@ -88,17 +88,17 @@ extractLicenseFromReadme = (readme) ->
   return unless readme?
 
   license =
-    if readme.indexOf('MIT') > -1
+    if readme.includes('MIT')
       'MIT'
-    else if readme.indexOf('BSD') > -1
+    else if readme.includes('BSD')
       'BSD'
-    else if readme.indexOf('Apache License') > -1
+    else if readme.includes('Apache License')
       'Apache'
-    else if readme.indexOf('DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE') > -1
+    else if readme.includes('DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE')
       'WTF'
-    else if readme.indexOf('Unlicense') > -1 or readme.indexOf('UNLICENSE') > -1
+    else if readme.includes('Unlicense') or readme.includes('UNLICENSE')
       'Unlicense'
-    else if readme.toLocaleLowerCase().indexOf('public domain') > -1
+    else if readme.toLocaleLowerCase().includes('public domain')
       'Public Domain'
 
   if license?
@@ -141,7 +141,7 @@ extractLicenseFromDirectory = (path, expected) ->
   {license, source: licenseFileName, sourceText: licenseText}
 
 licenseFromText = (licenseText) ->
-  if licenseText.indexOf('Apache License') > -1
+  if licenseText.includes('Apache License')
     'Apache'
   else if isMITLicense(licenseText)
     'MIT'
@@ -149,13 +149,13 @@ licenseFromText = (licenseText) ->
     'BSD'
   else if isUnlicense(licenseText)
     'Unlicense'
-  else if licenseText.indexOf('The ISC License') > -1
+  else if licenseText.includes('The ISC License')
     'ISC'
-  else if licenseText.indexOf('GNU LESSER GENERAL PUBLIC LICENSE') > -1
+  else if licenseText.includes('GNU LESSER GENERAL PUBLIC LICENSE')
     'LGPL'
-  else if licenseText.indexOf('GNU GENERAL PUBLIC LICENSE') > -1
+  else if licenseText.includes('GNU GENERAL PUBLIC LICENSE')
     'GPL'
-  else if licenseText.toLocaleLowerCase().indexOf('public domain')  > -1
+  else if licenseText.toLocaleLowerCase().includes('public domain')
     'Public Domain'
 
 readIfExists = (path) ->
@@ -173,7 +173,7 @@ MITLicenseText = """
 """.replace(/\s+/gm, ' ')
 
 isMITLicense = (licenseText) ->
-  if licenseText.indexOf('MIT License') > -1
+  if licenseText.includes('MIT License')
     true
   else
     startIndex = licenseText.indexOf('Permission is hereby granted')
@@ -194,7 +194,7 @@ BSD3LicenseText = """
 """.replace(/\s+/gm, ' ')
 
 isBSDLicense = (licenseText) ->
-  if licenseText.indexOf('BSD License') > -1
+  if licenseText.includes('BSD License')
     true
   else
     startIndex = licenseText.indexOf('Redistribution and use')
@@ -217,7 +217,7 @@ UnlicenseText = """
 """.replace(/\s+/gm, ' ')
 
 isUnlicense = (licenseText) ->
-  if licenseText.indexOf('Unlicense') > -1
+  if licenseText.includes('Unlicense')
     true
   else
     startIndex = licenseText.indexOf('This is free and unencumbered software')

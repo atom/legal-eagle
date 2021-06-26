@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "coffee-cache": "^1.0.2",
-    "coffee-script": "~1.6.3",
+    "coffeescript": "^2.5.1",
     "grunt": "~0.4.1",
     "grunt-cli": "~0.1.8",
     "grunt-coffeelint": "0.0.6",
