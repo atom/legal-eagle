@@ -20,7 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "read-installed": "4.0.3",
-    "underscore": "~1.6.0"
+    "underscore": "^1.13.1"
   },
   "devDependencies": {
     "coffee-cache": "^1.0.2",
