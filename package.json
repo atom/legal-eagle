@@ -1,6 +1,6 @@
 {
   "name": "legal-eagle",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "description": "A tool for listing the licenses of all dependencies of a node module",
   "main": "./lib/legal-eagle",
   "scripts": {
@@ -23,14 +23,14 @@
     "underscore": "~1.6.0"
   },
   "devDependencies": {
+    "coffee-cache": "^1.0.2",
     "coffee-script": "~1.6.3",
-    "jasmine-focused": "~0.19.0",
-    "grunt-contrib-coffee": "~0.7.0",
-    "grunt-cli": "~0.1.8",
     "grunt": "~0.4.1",
-    "grunt-shell": "~0.2.2",
+    "grunt-cli": "~0.1.8",
     "grunt-coffeelint": "0.0.6",
-    "rimraf": "~2.2.2",
-    "coffee-cache": "~0.2.0"
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-shell": "~0.2.2",
+    "jasmine-focused": "~0.19.0",
+    "rimraf": "~2.2.2"
   }
 }
