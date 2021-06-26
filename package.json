@@ -31,6 +31,6 @@
     "grunt-contrib-coffee": "^2.1.0",
     "grunt-shell": "^3.0.1",
     "jasmine-focused": "^1.0.7",
-    "rimraf": "~2.2.2"
+    "rimraf": "^3.0.2"
   }
 }
