@@ -43,7 +43,7 @@ extractLicense = ({license, licenses, readme}, path) ->
   license ?= licenses[0] if licenses?.length > 0
   if license && license.type?
     license = license.type
-  if Object.prototype.toString.call(license) == '[object Array]'
+  if Array.isArray(license)
     license = license[0]
   result_dir = extractLicenseFromDirectory(path, license)
   if result_dir && result_dir['license']
