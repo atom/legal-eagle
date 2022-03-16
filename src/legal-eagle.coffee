@@ -67,6 +67,8 @@ mungeLicenseName = (license) ->
     'Apache'
   else if license.match /[\s(]*ISC.*/
     'ISC'
+  else if license.match /[\s(]*0BSD.*/
+    '0BSD'
   else if license.match /[\s(]*MIT.*/
     'MIT'
   else if license is 'WTFPL'
@@ -155,6 +157,8 @@ licenseFromText = (licenseText) ->
     'LGPL'
   else if licenseText.indexOf('GNU GENERAL PUBLIC LICENSE') > -1
     'GPL'
+  else if isZeroBSD(licenseText)
+    '0BSD'
   else if licenseText.toLocaleLowerCase().indexOf('public domain')  > -1
     'Public Domain'
 
@@ -163,6 +167,20 @@ readIfExists = (path) ->
 
 normalizeLicenseText = (licenseText) ->
   licenseText.replace(/\s+/gm, ' ').replace(/\s+$/m, '').replace(/\.$/, '').trim()
+
+ZeroBSDLicenseText = """
+  Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.
+
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+""".replace(/\s+/gm, ' ')
+
+isZeroBSD = (licenseText) ->
+  index = licenseText.indexOf('Permission to use, copy, modify, and/or')
+  if(index > -1)
+    normalizedLicenseText = normalizeLicenseText(licenseText[index..])
+    normalizedLicenseText is ZeroBSDLicenseText
+  else
+    false
 
 MITLicenseText = """
   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -227,7 +245,7 @@ isUnlicense = (licenseText) ->
     else
       false
 
-PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF', 'LGPL', 'LGPL-2.0', 'LGPL-3.0', 'ISC', 'Artistic-2.0', 'Unlicense', 'CC-BY', 'Public Domain']
+PermissiveLicenses = ['MIT', 'BSD', 'Apache', 'WTF', 'LGPL', 'LGPL-2.0', 'LGPL-3.0', 'ISC', 'Artistic-2.0', 'Unlicense', 'CC-BY', '0BSD', 'Public Domain']
 
 omitPermissiveLicenses = (licenseSummary) ->
   for name, {license} of licenseSummary
