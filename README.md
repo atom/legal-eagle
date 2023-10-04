@@ -34,3 +34,8 @@ summary.
 ## License
 
 [MIT](LICENSE.md)
+
+## Dependency note
+
+`coffee-cache` and `rimraf` aren't actually used in the code, they're just nice
+developer utils.

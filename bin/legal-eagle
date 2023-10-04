@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-var legalEagle = require('../lib/legal-eagle');
-var path = require('path');
+const legalEagle = require('../lib/legal-eagle');
+const path = require('path');
 
-var pathToCheck;
+let pathToCheck;
 if (process.argv[2])
   pathToCheck = path.resolve(process.argv[2]);
 else
